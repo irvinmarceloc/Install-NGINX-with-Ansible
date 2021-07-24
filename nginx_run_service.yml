@@ -1,0 +1,37 @@
+#Playbook para instalar NGINX
+- hosts: webservice 
+  become: yes
+  tasks: 
+  	- name: instalando nginx 
+  	  yum:
+  	     name: instalando nginx 
+  	     state: lastest
+  	     
+  	- name: crear directorio de archivo 
+  	  file: 
+  	     path: /var/www/html
+  	     state: directory
+  	     owner: root
+  	     group: root 
+  	     mode: '0755'
+  	     
+        - name: copiar archivo index.html template
+  	  copy: 
+  	     src: index.html
+  	     dest: /var/www/html
+  	     owner: root
+  	     group: root 
+  	     mode: '0644'
+  	     
+        - name: copiar archivo configuracion nginx 
+  	  copy: 
+  	     src: configNGNIX.conf
+  	     dest: /etc/nginx/conf.d/
+  	     owner: root
+  	     group: root 
+  	     mode: '0644'
+  	   
+        - name: Iniciar servicio NGNIX
+  	  service: 
+  	     name: nginx 
+  	     state: started
